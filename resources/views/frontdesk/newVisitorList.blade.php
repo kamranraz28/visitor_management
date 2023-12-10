@@ -62,10 +62,9 @@
                                             <td>{{ $visitor->phone }}</td>
                                             <td>{{ $visitor->email }}</td>
                                             <td>{{ $visitor->address }}</td>
-                                            <!-- <td><a href="/application_details/{{$visitor->id}}" class="btn btn-info btn-sm">Details</a></td> -->
                                             <td>
-                                                <button class="btn btn-success btn-sm" data-id="{{ $visitor->id }}" id="approveButton">Approve</button>                                                <br>
-                                                <!-- <a href="/application_reject/{{$visitor->id}}" class="btn btn-danger btn-sm">Reject</a>    -->
+                                            <button class="btn btn-success btn-sm approveButton" data-id="{{ $visitor->id }}">Approve</button>
+                                               
                                             </td>
                                         </tr>
                                         @endforeach
@@ -87,25 +86,29 @@
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
  <script>
-  document.getElementById('approveButton').addEventListener('click', function() {
-    var clickedElement = $(this);
-    var visitor_id = clickedElement.data('id');
-    Swal.fire({
-      title: 'Scan Bar Code',
-      html:
-        '<form action="/final_approve" method="post">' +
-        '   @csrf' +
-        '   <input type="text" name="card_number" class="form-control" placeholder="Enter Card Number">' +
-        '   <input type="hidden" name="visitor_id" value="' + visitor_id + '">' +
-        '<br>'+
-        '   <button type="submit" class="btn btn-primary">Submit</button>' +
-        '</form>',
-      showCancelButton: true,
-      showConfirmButton: false,
-      cancelButtonText: 'Cancel',
-      showLoaderOnConfirm: true,
-    })
-  });
+  document.addEventListener('DOMContentLoaded', function() {
+   document.querySelectorAll('.approveButton').forEach(function(button) {
+      button.addEventListener('click', function() {
+         var clickedElement = this;
+         var visitor_id = clickedElement.dataset.id;
+         Swal.fire({
+            title: 'Scan Bar Code',
+            html:
+               '<form action="/final_approve" method="post">' +
+               '   @csrf' +
+               '   <input type="text" name="card_number" class="form-control" placeholder="Enter Card Number">' +
+               '   <input type="hidden" name="visitor_id" value="' + visitor_id + '">' +
+               '<br>' +
+               '   <button type="submit" class="btn btn-primary">Submit</button>' +
+               '</form>',
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: 'Cancel',
+            showLoaderOnConfirm: true,
+         });
+      });
+   });
+});
 </script>
 
 
