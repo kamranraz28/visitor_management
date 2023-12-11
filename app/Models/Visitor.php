@@ -16,6 +16,6 @@ class Visitor extends Model
 
     public function visit()
     {
-        return $this->hasMany(VisitDetail::class);
+        return $this->hasOne(VisitDetail::class);
     }
 }

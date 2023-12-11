@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Total Visitor</h6>
-                                    <h3>{{$vcount}}</h3>
+                                    <h3>{{$totalCount}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
@@ -36,31 +36,37 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover table-center mb-0 patients-table table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
+                                <thead>
+                                        <tr style="text-align:center">
                                             <th>#</th>
-                                            <th>Bar Code</th>
+                                           <th>Bar Code</th>
                                             <th>Name</th>
                                             <th>Mobile</th>
-                                            
                                             <th>E-mail</th>
                                             <th>Address</th>
+                                            <th>Visited Dept.</th>
+                                            <th>Visited to</th>
+                                            <th>Reason</th>
+                                            <th>CheckIn Time</th>
                                             
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($visitors as $visitor)
-                                        <tr>
+                                        @foreach ($visitorDetails as $element)
+                                        <tr style="text-align:center">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $visitor->card_number ?? '-' }}</td>
-                                            <td>{{ $visitor->name }}</td>
-                                            <td>{{ $visitor->phone }}</td>
-                                            <td>{{ $visitor->email }}</td>
-                                            <td>{{ $visitor->address }}</td>
+                                            <td>{{ $element['visitorBarCode'] }}</td>
+                                            <td>{{ $element['visitorName'] }}</td>
+                                            <td>{{ $element['visitorPhone'] }}</td>
+                                            <td>{{ $element['visitorEmail'] }}</td>
+                                            <td>{{ $element['visitorAddress'] }}</td>
+                                            <td>{{ $element['deptName'] }}</td>
+                                            <td>{{ $element['staffName'] }}</td>
+                                            <td>{{ $element['visitReason'] }}</td>
+                                            <td>{{ $element['visitCheckin'] }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>

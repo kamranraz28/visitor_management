@@ -9,12 +9,12 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{{route('department_list')}}">
                     <span>Departments</span>
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{{route('staff_list')}}">
                     <span>Staffs</span>
                 </a>
             </li>
