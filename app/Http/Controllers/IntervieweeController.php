@@ -32,7 +32,7 @@ class IntervieweeController extends Controller
             $nid = $value[2];
             $purpose = $value[3];
 
-            $barCode = $nid .. 'IN' . str_pad($counter, 4, '0', STR_PAD_LEFT);
+            $barCode = $nid .$currentDate. 'IN' . str_pad($counter, 4, '0', STR_PAD_LEFT);
 
             $counter++;
 
