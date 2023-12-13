@@ -18,6 +18,13 @@
                     <span>Staffs</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{route('reason_list')}}">
+                    <span>Reasons</span>
+                </a>
+            </li>
+
             <li>
                 <a href="{{route('total_visitor')}}">
                     <span>Total Visitor</span>
@@ -34,11 +41,17 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                <a class="dropdown-item" href="#">Department wise visiting report</a>
-                <a class="dropdown-item" href="#">Date wise visiting report</a>
-                <a class="dropdown-item" href="#">Reason wise visiting report</a>
+                <a class="dropdown-item" href="{{route('departmentWiseReport')}}">Department wise visiting report</a>
+                <a class="dropdown-item" href="{{route('dayWiseReport')}}">Date wise visiting report</a>
+                <a class="dropdown-item" href="{{route('reasonWiseReport')}}">Reason wise visiting report</a>
             </div>
         </li>
+
+        <li>
+                <a href="{{route('interviewee_registration')}}">
+                    <span>Interviewee Registration</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </div>

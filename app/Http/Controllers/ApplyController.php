@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\Staff;
 use App\Models\Visitor;
+use App\Models\Reason;
 use App\Models\VisitDetail;
 use Illuminate\Support\Facades\Redirect;
 
@@ -16,7 +17,8 @@ class ApplyController extends Controller
     {
         $department= Department::all();
         $staffs = Staff::all();
-        return view('frontend.applyForm',compact('department','staffs'));
+        $reasons = Reason::all();
+        return view('frontend.applyForm',compact('department','staffs','reasons'));
     }
 
     public function applyStore(Request $request)
@@ -38,7 +40,7 @@ class ApplyController extends Controller
         $visit->visitor_id = $visitorId;
         $visit->department_id = $request->department;
         $visit->staff_id = $request->staff;
-        $visit->reason = $request->reason;
+        $visit->reason_id = $request->reason;
 
         $visit->save();
 

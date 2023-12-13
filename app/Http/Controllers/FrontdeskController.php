@@ -7,6 +7,7 @@ use App\Models\VisitDetail;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Staff;
+use App\Models\Reason;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -26,7 +27,7 @@ class FrontdeskController extends Controller
             $visitorPhone = $visitor->phone;
             $visitorEmail = $visitor->email;
             $visitorAddress = $visitor->address;
-            $visitReason = $visitor->visit->reason;
+            $visitorTime = $visitor->created_at;
             $visitorId = $visitor->id;
 
             // StaffInfo start
@@ -41,6 +42,12 @@ class FrontdeskController extends Controller
             $deptName = $deptInfo ? $deptInfo->department->name : null;
             // DepartmentInfo End
 
+             // ReasonInfo start
+             $reasonId = $visitor->visit->reason_id;
+             $reasonInfo = VisitDetail::with('reason')->where('reason_id', $reasonId)->first();
+             $reasonName = $reasonInfo ? $reasonInfo->reason->name : null;
+             // ReasonInfo End
+
             $details = [
                 'visitorName' => $visitorName,
                 'visitorPhone' => $visitorPhone,
@@ -48,7 +55,8 @@ class FrontdeskController extends Controller
                 'visitorAddress' => $visitorAddress,
                 'deptName' => $deptName,
                 'staffName' => $staffName,
-                'visitReason' => $visitReason,
+                'reasonName' => $reasonName,
+                'visitorTime' => $visitorTime,
                 'id' => $visitorId,
             ];
 
@@ -73,7 +81,6 @@ class FrontdeskController extends Controller
             $visitorBarCode = $visitor ? $visitor->card_number : null;
             $visitorAddress = $visitor->address;
             $visitorAddress = $visitor->address;
-            $visitReason = $visitor->visit->reason;
             $visitCheckin = $visitor->visit->check_in;
             $visitorId = $visitor->id;
 
@@ -89,6 +96,12 @@ class FrontdeskController extends Controller
             $deptName = $deptInfo ? $deptInfo->department->name : null;
             // DepartmentInfo End
 
+            // ReasonInfo start
+            $reasonId = $visitor->visit->reason_id;
+            $reasonInfo = VisitDetail::with('reason')->where('reason_id', $reasonId)->first();
+            $reasonName = $reasonInfo ? $reasonInfo->reason->name : null;
+            // ReasonInfo End
+            
             $details = [
                 'visitorBarCode' => $visitorBarCode,
                 'visitorName' => $visitorName,
@@ -97,7 +110,7 @@ class FrontdeskController extends Controller
                 'visitorAddress' => $visitorAddress,
                 'deptName' => $deptName,
                 'staffName' => $staffName,
-                'visitReason' => $visitReason,
+                'reasonName' => $reasonName,
                 'visitCheckin' => $visitCheckin,
                 'id' => $visitorId,
             ];
@@ -131,7 +144,8 @@ class FrontdeskController extends Controller
     {
         $department= Department::all();
         $staffs = Staff::all();
-        return view('frontdesk.addNewVisitor',compact('department','staffs'));
+        $reasons = Reason::all();
+        return view('frontdesk.addNewVisitor',compact('department','staffs','reasons'));
     }
 
     public function final_approve(Request $request)
@@ -293,6 +307,58 @@ class FrontdeskController extends Controller
         return redirect()->route('staff_list')->with('success_message', 'Staff updated successfully.');
 
 
+    }
+
+    public function reason_list()
+    {
+        $reasons= Reason::all();
+        $reasonCount = $reasons->count();
+        return view('frontdesk.reasonList',compact('reasonCount','reasons'));
+    }
+    public function reason_delete($id)
+    {
+
+        $reason = Reason::find($id);
+        $reason->delete();
+        return redirect()->route('reason_list')->with('success_message', 'Reason deleted successfully.');
+    }
+
+    public function reasonUpdate(Request $request)
+    {
+        $reasonId = $request->input('reason_id');
+        // dd($reasonId);
+        $reasonName = $request->input('name');
+        // dd($reasonName);
+        $reasonInfo = Reason::find($reasonId);
+        // dd($reasonInfo);
+
+        $reasonInfo->update([
+            'name' => $reasonName,
+        ]);
+        return redirect()->route('reason_list')->with('success_message', 'Reason updated successfully.');
+
+
+    }
+
+    public function new_reason_add()
+    {
+        return view('frontdesk.addNewReason');
+    }
+
+    public function reasonStore(Request $request)
+    {
+        try {
+            $reasonName = $request->input('name');
+            
+            $reason = new Reason;
+            $reason->name = $reasonName;
+            $reason->save();
+
+            return redirect(route('reason_list'))->with('success_message', 'New Reason added successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error saving department: ' . $e->getMessage());
+            return redirect()->back()->with('error_message', 'Sorry, something went wrong. Please try again.');
+        }
     }
 
 

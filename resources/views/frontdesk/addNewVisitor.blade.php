@@ -65,9 +65,15 @@
     </div>
 
     <div class="mb-3">
-        <label for="reason" class="form-label">Reason to visit</label>
-        <textarea class="form-control" id="reason" name="reason" placeholder="Enter the reason" rows="3" required></textarea>
-    </div>
+                <label for="reason" class="form-label">Reason</label>
+                <select class="form-select" id="reason" name="reason">
+                    <option value="">Select Reason</option>
+                    
+                    @foreach($reasons as $reason)
+                        <option value="{{ $reason->id }}">{{ $reason->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
     <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary w-100 btn-lg login-btn">Add Visitor</button>

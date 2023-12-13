@@ -28,4 +28,9 @@ class VisitDetail extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function reason()
+    {
+        return $this->belongsTo(Reason::class);
+    }
 }

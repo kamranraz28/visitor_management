@@ -6,22 +6,28 @@
           
             <div class="card dash-card">
                 <div class="card-body">
+                <div class="text-center">
+                        <h3>Find Report By Date</h3>
+                    </div>
+                    <hr>
+                    <br>
                     <div class="row">
+                        <form action="{{route('dayReportStore')}}">
                         <div class="col-md-12 col-lg-6">
-                            <div class="dash-widget dct-border-rht">
-                                <div class="circle-bar circle-bar2">
-                                    <div class="circle-graph2" data-percent="65">
-                                        <img src="assets/img/total-icon.png" class="img-fluid" alt="Patient">
-                                    </div>
-                                </div>
-                                <div class="dash-widget-info">
-                                    <h6>Total Visitor</h6>
-                                    <h3>{{$totalCount}}</h3>
-                                    <p class="text-muted">Till Today</p>
-                                </div>
-                            </div>
+                        <div class="col-md-8">
+                            <label class="control-label" for="from">From</label>
+                            <input type="date" class="form-control" name="from" id="from" value="{{ old('from', Session::get('from')) }}" format="Y-m-d">
                         </div>
-                        
+
+                            <br>
+                            <div class="col-md-8">
+                            <label class="control-label" for="to">To</label>
+                            <input type="date" class="form-control" name="to" id="to" value="{{ old('to', Session::get('to')) }}" format="Y-m-d">
+                        </div>
+                            <br>
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -62,7 +68,7 @@
                                             <td>{{ $element['visitorAddress'] }}</td>
                                             <td>{{ $element['deptName'] }}</td>
                                             <td>{{ $element['staffName'] }}</td>
-                                            <td>{{ $element['reasonName'] }}</td>
+                                            <td>{{ $element['visitReason'] }}</td>
                                             <td>{{ $element['visitCheckin'] }}</td>
                                         </tr>
                                         @endforeach
@@ -109,6 +115,10 @@
             });
         });
     </script>
+
+@php
+  Session::forget(['from','to']);
+@endphp
     @endsection
 
 

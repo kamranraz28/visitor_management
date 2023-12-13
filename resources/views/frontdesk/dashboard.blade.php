@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <h4>Department Wise Visit:</h4>
+        <!-- <h4>Department Wise Visit:</h4>
 
         <div class="row">
           
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         
     </div>
 

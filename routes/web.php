@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\departmentReportController;
+use App\Http\Controllers\dayReportController;
+use App\Http\Controllers\ReasonReportController;
+use App\Http\Controllers\IntervieweeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApplyController;
@@ -65,10 +69,36 @@ Route::group(['middleware' => ['web', AuthenticatedMiddleware::class]], function
     Route::get('/new_staff_add', [FrontdeskController::class, 'new_staff_add'])->name('new_staff_add');
     Route::post('/staffStore', [FrontdeskController::class, 'staffStore'])->name('staffStore');
     Route::post('/edit_staff', [FrontdeskController::class, 'staffUpdate'])->name('staffUpdate');
-
     // Staffs route End here
 
-   
+    // Reasons route Start here
+    Route::get('/reason_list', [FrontdeskController::class, 'reason_list'])->name('reason_list');
+    Route::get('/reason_delete/{id}', [FrontdeskController::class, 'reason_delete'])->name('reason_delete');
+    Route::get('/new_reason_add', [FrontdeskController::class, 'new_reason_add'])->name('new_reason_add');
+    Route::post('/reasonStore', [FrontdeskController::class, 'reasonStore'])->name('reasonStore');
+    Route::post('/edit_reason', [FrontdeskController::class, 'reasonUpdate'])->name('reasonUpdate');
+    // Reason route End here
+
+    //Department Wise Report Start 
+    Route::get('/departmentWiseReport', [departmentReportController::class, 'departmentWiseReport'])->name('departmentWiseReport');
+    Route::get('/departmentReportStore', [departmentReportController::class, 'departmentReportStore'])->name('departmentReportStore');
+    //Department Wise Report End
+
+
+     //Day Wise Report Start 
+     Route::get('/dayWiseReport', [dayReportController::class, 'dayWiseReport'])->name('dayWiseReport');
+     Route::get('/dayReportStore', [dayReportController::class, 'dayReportStore'])->name('dayReportStore');
+     //Day Wise Report End
+
+    //Day Wise Report Start 
+    Route::get('/reasonWiseReport', [ReasonReportController::class, 'reasonWiseReport'])->name('reasonWiseReport');
+    Route::get('/reasonReportStore', [ReasonReportController::class, 'reasonReportStore'])->name('reasonReportStore');
+    //Day Wise Report End
+
+   //Interviewee Start
+   Route::get('/interviewee_registration', [IntervieweeController::class, 'interviewee_registration'])->name('interviewee_registration');
+   Route::post('/intervieweeStore', [IntervieweeController::class, 'intervieweeStore'])->name('intervieweeStore');
+   //Interviewee End
     
 
 
