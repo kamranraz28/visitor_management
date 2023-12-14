@@ -4,7 +4,6 @@ use App\Http\Controllers\departmentReportController;
 use App\Http\Controllers\dayReportController;
 use App\Http\Controllers\ReasonReportController;
 use App\Http\Controllers\IntervieweeController;
-use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApplyController;
@@ -99,12 +98,12 @@ Route::group(['middleware' => ['web', AuthenticatedMiddleware::class]], function
    //Interviewee Start
    Route::get('/interviewee_registration', [IntervieweeController::class, 'interviewee_registration'])->name('interviewee_registration');
    Route::post('/intervieweeStore', [IntervieweeController::class, 'intervieweeStore'])->name('intervieweeStore');
+   Route::get('/interviewee_list', [IntervieweeController::class, 'interviewee_list'])->name('interviewee_list');
+
    //Interviewee End
 
-    //Worker Start
-    Route::get('/worker_registration', [WorkerController::class, 'worker_registration'])->name('worker_registration');
-    Route::post('/workerStore', [WorkerController::class, 'workerStore'])->name('workerStore');
-    //Worker End
+
+   
     
 
 

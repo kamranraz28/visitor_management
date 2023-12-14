@@ -35,6 +35,11 @@
                     <span>New Visitors Application</span>
                 </a>
             </li>
+            <li>
+                <a href="{{route('interviewee_list')}}">
+                    <span>Interviewees</span>
+                </a>
+            </li>
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Reports
@@ -53,11 +58,9 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{route('worker_registration')}}">
-                    <span>Worker Registration</span>
-                </a>
-            </li>
+            
+
+
         </ul> 
     </nav>
 </div>

@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 database/migrations/2023_12_09_060854_create_visit_details_table.php
+app/Http/Controllers/WorkerController.php

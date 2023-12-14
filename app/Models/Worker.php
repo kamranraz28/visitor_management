@@ -14,4 +14,3 @@ class Worker extends Model
         'name','phone','nid','purpose','bar_code'
     ];
 }
- 

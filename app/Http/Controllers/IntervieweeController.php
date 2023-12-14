@@ -77,5 +77,10 @@ class IntervieweeController extends Controller
     }
 
 
+    public function interviewee_list()
+    {
+        $interInfo = Interviewee::all();
+        return view('frontdesk.intervieweeList',compact('interInfo'));
+    }
 
 }
