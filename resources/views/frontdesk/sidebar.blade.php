@@ -58,7 +58,7 @@
                     <span>Worker Registration</span>
                 </a>
             </li>
-        </ul>
+        </ul> 
     </nav>
 </div>
 

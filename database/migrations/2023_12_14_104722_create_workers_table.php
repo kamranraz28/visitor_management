@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('purpose');
             $table->string('bar_code');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

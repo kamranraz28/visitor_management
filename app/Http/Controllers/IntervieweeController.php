@@ -50,7 +50,7 @@ class IntervieweeController extends Controller
 
             $interviewee->update(['bar_code' => $barCode]);
         }
-    }else{
+    }else{ 
         foreach ($csv_data as $key => $value) {
             $visitorName = $value[0];
             $phone = $value[1];

@@ -60,6 +60,5 @@ class WorkerController extends Controller
 
     return redirect()->route('worker_registration')->with('success_message', 'Workers registered successfully.');
 }
-
-
+ 
 }
