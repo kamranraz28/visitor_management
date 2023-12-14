@@ -49,7 +49,13 @@
 
         <li>
                 <a href="{{route('interviewee_registration')}}">
-                    <span>Interviewee Registration</span>
+                    <span>Interviewee/Worker Registration</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{route('worker_registration')}}">
+                    <span>Worker Registration</span>
                 </a>
             </li>
         </ul>

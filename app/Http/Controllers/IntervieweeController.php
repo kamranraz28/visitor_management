@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Interviewee;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -17,6 +18,9 @@ class IntervieweeController extends Controller
 
     public function intervieweeStore(Request $request)
     {
+        $userType= $request->input('option');
+        // dd($userType);
+
         $path = $request->file('csv_file')->getRealPath();
         $row_index = file($request->file('csv_file'), FILE_SKIP_EMPTY_LINES);
         $data = array_map('str_getcsv', file($path));
@@ -24,7 +28,8 @@ class IntervieweeController extends Controller
 
         $currentDate = Carbon::now()->format('Ymd');
 
-        $counter = 1;
+        if($userType== 'interviewee')
+        {
 
         foreach ($csv_data as $key => $value) {
             $visitorName = $value[0];
@@ -32,21 +37,45 @@ class IntervieweeController extends Controller
             $nid = $value[2];
             $purpose = $value[3];
 
-            $barCode = $nid .$currentDate. 'IN' . str_pad($counter, 4, '0', STR_PAD_LEFT);
-
-            $counter++;
+            $barCode = $currentDate . 'IN'. 0;
 
             $data1['name'] = $visitorName;
             $data1['phone'] = $phone;
             $data1['nid'] = $nid;
             $data1['purpose'] = $purpose;
-            $data1['bar_code'] = $barCode;
 
-            Interviewee::create($data1);
+            $interviewee = Interviewee::create($data1);
+
+            $barCode .= $interviewee->id;
+
+            $interviewee->update(['bar_code' => $barCode]);
+        }
+    }else{
+        foreach ($csv_data as $key => $value) {
+            $visitorName = $value[0];
+            $phone = $value[1];
+            $nid = $value[2];
+            $purpose = $value[3];
+
+            $barCode = $currentDate . 'WK'. 0;
+
+            $data1['name'] = $visitorName;
+            $data1['phone'] = $phone;
+            $data1['nid'] = $nid;
+            $data1['purpose'] = $purpose;
+
+            $worker = Worker::create($data1);
+
+            $barCode .= $worker->id;
+
+            $worker->update(['bar_code' => $barCode]);
         }
 
-        return redirect()->route('interviewee_registration')->with('success_message', 'Interviewees registered successfully.');
     }
+
+        return redirect()->route('interviewee_registration')->with('success_message', 'Registered successfully.');
+    }
+
 
 
 }
