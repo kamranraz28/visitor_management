@@ -47,6 +47,7 @@ Route::group(['middleware' => ['web', AuthenticatedMiddleware::class]], function
     // New Visitor route Start here
     Route::get('/new_visitors_application', [FrontdeskController::class, 'new_visitor'])->name('new_visitor');
     Route::get('/new_visitors_approve/{id}', [FrontdeskController::class, 'visitor_approve'])->name('visitor_approve');
+    Route::get('/new_visitors_delete/{id}', [FrontdeskController::class, 'new_visitors_delete'])->name('new_visitors_delete');
     Route::post('/final_approve', [FrontdeskController::class, 'final_approve'])->name('final_approve');
     Route::get('/application_reject/{id}', [FrontdeskController::class, 'application_reject'])->name('application_reject');
     Route::get('/application_details/{id}', [FrontdeskController::class, 'application_details'])->name('application_details');
@@ -98,7 +99,11 @@ Route::group(['middleware' => ['web', AuthenticatedMiddleware::class]], function
    //Interviewee Start
    Route::get('/interviewee_registration', [IntervieweeController::class, 'interviewee_registration'])->name('interviewee_registration');
    Route::post('/intervieweeStore', [IntervieweeController::class, 'intervieweeStore'])->name('intervieweeStore');
-   Route::get('/interviewee_list', [IntervieweeController::class, 'interviewee_list'])->name('interviewee_list');
+   Route::get('/visitor_list', [IntervieweeController::class, 'interviewee_list'])->name('interviewee_list');
+   Route::get('/print_worker/{id}', [IntervieweeController::class, 'print_worker'])->name('print_worker');
+   Route::get('/print_interviewee/{id}', [IntervieweeController::class, 'print_interviewee'])->name('print_interviewee');
+   Route::get('/interStore', [IntervieweeController::class, 'interStore'])->name('interStore');
+   Route::get('/check/', [IntervieweeController::class, 'check'])->name('check');
 
    //Interviewee End
 

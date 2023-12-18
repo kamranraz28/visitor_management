@@ -361,6 +361,14 @@ class FrontdeskController extends Controller
         }
     }
 
+    public function new_visitors_delete($id)
+    {
+        // dd($id);
+        $visitorInfo = Visitor::find($id);
+        $visitorInfo->delete();
+        return redirect()->route('new_visitor')->with('success_message', 'Application deleted successfully.');
+    }
+
 
     
 }

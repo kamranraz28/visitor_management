@@ -69,7 +69,9 @@
                                             <td>{{ $element['reasonName'] }}</td>
                                             <td>{{ $element['visitorTime'] }}</td>
                                             <td>
-                                            <button class="btn btn-secondary btn-sm approveButton" data-id="{{ $element['id'] }}">Approve</button>                                                <br>
+                                            <button class="btn btn-secondary btn-sm approveButton" data-id="{{ $element['id'] }}">Approve</button>   
+                                            <a href="{{ route('new_visitors_delete', ['id' => $element['id']]) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to decline this visitor application?')">Decline</a>
+                                             <br>
                                             </td>
                                         </tr>
                                         @endforeach

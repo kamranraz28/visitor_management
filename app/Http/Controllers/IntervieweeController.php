@@ -6,6 +6,7 @@ use App\Models\Interviewee;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Session;
 
 class IntervieweeController extends Controller
 {
@@ -79,8 +80,61 @@ class IntervieweeController extends Controller
 
     public function interviewee_list()
     {
-        $interInfo = Interviewee::all();
-        return view('frontdesk.intervieweeList',compact('interInfo'));
+        $userType = Session::get('userType');
+        $lastUpload = Session::get('lastUpload');
+    
+        if ($userType == "worker") {
+            if($lastUpload != "last_upload"){
+            $interviewees = Worker::all();
+            }else{
+                $interviewees = Worker::where('created_at', '=', Worker::max('created_at'))->get();
+            }
+        }
+        else{
+            if($lastUpload != "last_upload"){
+                $interviewees = Interviewee::all();
+                }else{
+                    $interviewees = Interviewee::where('created_at', '=', Interviewee::max('created_at'))->get();
+                }
+        }
+    
+        return view('frontdesk.intervieweeList', compact('interviewees','userType'));
     }
+    
+
+    public function interStore(Request $request)
+    {
+        $userType = $request->input('userType');
+        $lastUpload = $request->input('last_upload');
+        Session::put(['userType'=>$userType]);
+        Session::put(['lastUpload'=>$lastUpload]);
+
+
+        return redirect(route('interviewee_list'));
+    }
+
+
+    public function print_worker($id)
+{
+
+    $worker = Worker::find($id);
+    // dd($worker);
+
+    $printContent = view('frontdesk.printWorker', ['worker' => $worker])->render();
+
+    return response($printContent)->header('Content-Type', 'text/html');
+}
+
+
+public function print_interviewee($id)
+{
+
+    $inter = Interviewee::find($id);
+    // dd($inter);
+
+    $printContent = view('frontdesk.printInterviewee', ['inter' => $inter])->render();
+
+    return response($printContent)->header('Content-Type', 'text/html');
+}
 
 }
