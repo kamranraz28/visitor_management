@@ -9,6 +9,7 @@ use App\Models\Visitor;
 use App\Models\Staff;
 use App\Models\Reason;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class FrontdeskController extends Controller
@@ -42,11 +43,11 @@ class FrontdeskController extends Controller
             $deptName = $deptInfo ? $deptInfo->department->name : null;
             // DepartmentInfo End
 
-             // ReasonInfo start
-             $reasonId = $visitor->visit->reason_id;
-             $reasonInfo = VisitDetail::with('reason')->where('reason_id', $reasonId)->first();
-             $reasonName = $reasonInfo ? $reasonInfo->reason->name : null;
-             // ReasonInfo End
+            // ReasonInfo start
+            $reasonId = $visitor->visit->reason_id;
+            $reasonInfo = VisitDetail::with('reason')->where('reason_id', $reasonId)->first();
+            $reasonName = $reasonInfo ? $reasonInfo->reason->name : null;
+            // ReasonInfo End
 
             $details = [
                 'visitorName' => $visitorName,
@@ -101,7 +102,7 @@ class FrontdeskController extends Controller
             $reasonInfo = VisitDetail::with('reason')->where('reason_id', $reasonId)->first();
             $reasonName = $reasonInfo ? $reasonInfo->reason->name : null;
             // ReasonInfo End
-            
+
             $details = [
                 'visitorBarCode' => $visitorBarCode,
                 'visitorName' => $visitorName,
@@ -124,28 +125,90 @@ class FrontdeskController extends Controller
     public function dashboard()
     {
         $vcount = Visitor::count();
-        // dd($vcount);
         $newCount = Visitor::where('status', 0)->count();
 
-        $qualityCount = VisitDetail::where('department_id',3)->count();
-        $designCount = VisitDetail::where('department_id',1)->count();
+        // Graph: Department vs Visitor Start
 
-        return view('frontdesk.dashboard',compact('vcount','newCount','qualityCount','designCount'));
+        $departmentNames = Department::pluck('name')->toArray();
+        $departmentIds = Department::pluck('id')->toArray();
+
+        $departmentCounts = [];
+
+        foreach ($departmentIds as $departmentId) {
+            $count = VisitDetail::where('department_id', $departmentId)->count();
+            $departmentCounts[] = $count;
+        }
+
+        $chartData = [
+            'labels' => $departmentNames,
+            'data' => $departmentCounts,
+        ];
+
+        // Graph: Department vs Visitor End
+
+        // Graph: Reason vs Visitor Start
+
+        $reasonNames = Reason::pluck('name')->toArray();
+        $reasonIds = Reason::pluck('id')->toArray();
+
+        $reasonCounts = [];
+
+        foreach ($reasonIds as $reasonId) {
+            $count = VisitDetail::where('reason_id', $reasonId)->count();
+            $reasonCounts[] = $count;
+        }
+
+        $reasonChartData = [
+            'labels' => $reasonNames,
+            'data' => $reasonCounts,
+        ];
+
+        // Graph: Reason vs Visitor End
+
+        // Graph: Last 15 Days Visitor Start
+
+        $last15days = Carbon::now()->subDays(14);
+
+        $formattedDates = [];
+
+        for ($i = 0; $i < 15; $i++) {
+            $formattedDates[] = $last15days->copy()->addDays($i)->format('jS M');
+        }
+
+        $last15daysData = VisitDetail::where('created_at', $last15days)->get();
+
+        $daysCounts = [];
+
+        foreach ($formattedDates as $formattedDate) {
+            $date = Carbon::createFromFormat('jS M', $formattedDate);
+            $count = VisitDetail::whereDate('created_at', $date)->count();
+            $daysCounts[] = $count;
+        }
+
+        $daysChartData = [
+            'labels' => $formattedDates,
+            'data' => $daysCounts,
+        ];
+
+        // Graph: Last 15 Days Visitor End
+
+
+        return view('frontdesk.dashboard', compact('vcount', 'newCount', 'chartData', 'reasonChartData', 'daysChartData'));
     }
 
     public function application_details($id)
     {
-        
-    
+
+
         return view('frontdesk.applicationDetails');
 
     }
     public function new_visitor_add()
     {
-        $department= Department::all();
+        $department = Department::all();
         $staffs = Staff::all();
         $reasons = Reason::all();
-        return view('frontdesk.addNewVisitor',compact('department','staffs','reasons'));
+        return view('frontdesk.addNewVisitor', compact('department', 'staffs', 'reasons'));
     }
 
     public function final_approve(Request $request)
@@ -154,39 +217,39 @@ class FrontdeskController extends Controller
             'visitor_id' => 'required|numeric',
             'card_number' => 'required|string',
         ]);
-    
+
         $visitorId = $request->input('visitor_id');
         $cardNumber = $request->input('card_number');
-    
+
         $visitor = Visitor::find($visitorId);
-    
+
         if (!$visitor) {
             return redirect()->back()->with('error', 'Visitor not found');
         }
-    
+
         $visitInfo = VisitDetail::where('visitor_id', $visitorId)->first();
-   
+
         if ($visitInfo) {
             $visitInfo->update([
                 'check_in' => now(),
             ]);
         }
-    
+
 
         $visitor->update([
             'status' => 1,
             'card_number' => $cardNumber,
         ]);
-    
+
         return redirect()->back()->with('success', 'Visitor approved and checked-in successfully');
     }
-    
+
 
     public function department_list()
     {
-        $department= Department::all();
+        $department = Department::all();
         $deptCount = $department->count();
-        return view('frontdesk.departmentList',compact('deptCount','department'));
+        return view('frontdesk.departmentList', compact('deptCount', 'department'));
     }
 
     public function new_department_add()
@@ -198,7 +261,7 @@ class FrontdeskController extends Controller
     {
         try {
             $deptName = $request->input('name');
-            
+
             $dept = new Department;
             $dept->name = $deptName;
             $dept->save();
@@ -209,7 +272,7 @@ class FrontdeskController extends Controller
             return redirect()->back()->with('error_message', 'Sorry, something went wrong. Please try again.');
         }
     }
-    
+
     public function department_delete($id)
     {
 
@@ -269,9 +332,9 @@ class FrontdeskController extends Controller
 
     public function new_staff_add()
     {
-        $department= Department::all();
+        $department = Department::all();
 
-        return view('frontdesk.addNewStaff',compact('department'));
+        return view('frontdesk.addNewStaff', compact('department'));
     }
 
     public function staffStore(Request $request)
@@ -279,7 +342,7 @@ class FrontdeskController extends Controller
         try {
             $deptId = $request->input('department_id');
             $staffName = $request->input('name');
-            
+
             $staff = new Staff;
             $staff->department_id = $deptId;
             $staff->name = $staffName;
@@ -311,9 +374,9 @@ class FrontdeskController extends Controller
 
     public function reason_list()
     {
-        $reasons= Reason::all();
+        $reasons = Reason::all();
         $reasonCount = $reasons->count();
-        return view('frontdesk.reasonList',compact('reasonCount','reasons'));
+        return view('frontdesk.reasonList', compact('reasonCount', 'reasons'));
     }
     public function reason_delete($id)
     {
@@ -349,7 +412,7 @@ class FrontdeskController extends Controller
     {
         try {
             $reasonName = $request->input('name');
-            
+
             $reason = new Reason;
             $reason->name = $reasonName;
             $reason->save();
@@ -370,5 +433,5 @@ class FrontdeskController extends Controller
     }
 
 
-    
+
 }
