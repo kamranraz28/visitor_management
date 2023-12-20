@@ -30,15 +30,11 @@ class LoginController extends Controller
         // echo session('user');
 
         if ($user && Hash::check($request->password, $user->password)) {
-            $vcount = Visitor::count();
-            $qualityCount = VisitDetail::where('department_id', 3)->count();
-            $designCount = VisitDetail::where('department_id', 1)->count();
-            $newCount = Visitor::where('status', 0)->count();
-        
+
             // Set user session
             $request->session()->put('user', $data['email']);
             
-            return view('frontdesk.dashboard', compact('vcount', 'newCount', 'qualityCount', 'designCount'));
+            return redirect(route('dashboard'));
         } else {
             return redirect()->back();
         }

@@ -26,42 +26,47 @@
             </li>
 
             <li>
-                <a href="{{route('total_visitor')}}">
-                    <span>Total Visitor</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{route('new_visitor')}}">
                     <span>New Visitors Application</span>
                 </a>
             </li>
+
             <li>
-                <a href="{{route('interviewee_list')}}">
-                    <span>Interviewees</span>
+                <a href="{{route('total_visitor')}}">
+                    <span>Total Visitor</span>
                 </a>
             </li>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Reports
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                <a class="dropdown-item" href="{{route('departmentWiseReport')}}">Department wise visiting report</a>
-                <a class="dropdown-item" href="{{route('dayWiseReport')}}">Date wise visiting report</a>
-                <a class="dropdown-item" href="{{route('reasonWiseReport')}}">Reason wise visiting report</a>
-            </div>
-        </li>
-
-        <li>
+            
+            <li>
                 <a href="{{route('interviewee_registration')}}">
                     <span>Interviewee/Worker Registration</span>
                 </a>
             </li>
+            <li>
+                <a href="{{route('interviewee_list')}}">
+                    <span>Interviewees/Workers</span>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Reports
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-            
+                    <a class="dropdown-item" href="{{route('departmentWiseReport')}}">Department wise visiting
+                        report</a>
+                    <a class="dropdown-item" href="{{route('dayWiseReport')}}">Date wise visiting report</a>
+                    <a class="dropdown-item" href="{{route('reasonWiseReport')}}">Reason wise visiting report</a>
+                </div>
+            </li>
 
 
-        </ul> 
+
+
+
+
+        </ul>
     </nav>
 </div>
 
